@@ -1,0 +1,19 @@
+@HostAddress = https://localhost:7205
+
+### 1. Registrar un nuevo kiosquero
+POST {{HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "kiosco.centro@ejemplo.com",
+  "password": "PasswordSeguro123!"
+}
+
+### 2. Iniciar sesión y obtener el JWT
+POST {{HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "kiosco.centro@ejemplo.com",
+  "password": "PasswordSeguro123!"
+}
