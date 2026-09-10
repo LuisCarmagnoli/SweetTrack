@@ -17,11 +17,11 @@ El backend está construido con **.NET C#**, dividiendo las responsabilidades en
 
 ## Estado del Desarrollo
 
-* [x] **Microservicio 1 (Auth API):** Implementado con arquitectura en cuatro capas (Core, Data, Services, API).
-* [x] **Base de Datos Auth:** Configurada en un contenedor Docker.
-* [ ] **Microservicio 2 (Catalog API):** En etapa de planificación técnica.
-* [ ] **Microservicio 3 (Ordering API):** Pendiente.
-* [ ] **Frontend (Vue 3):** Pendiente.
+* ✅ **Microservicio 1 (Auth API):** Implementado con arquitectura en cuatro capas (Core, Data, Services, API).
+* ✅ **Base de Datos Auth:** Configurada en un contenedor Docker.
+* 🚧 **Microservicio 2 (Catalog API):** En etapa de planificación técnica.
+* ⏳ **Microservicio 3 (Ordering API):** Pendiente.
+* ⏳ **Frontend (Vue 3):** Pendiente.
 
 ---
 
