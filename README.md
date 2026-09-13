@@ -15,13 +15,22 @@ El backend está construido con **.NET C#**, dividiendo las responsabilidades en
 
 ---
 
+## Estándares de Calidad y Validación
+
+* **Validación de Entradas (FluentValidation):** Implementado en los DTOs de entrada para garantizar integridad de datos antes de alcanzar la capa de controladores.
+* **Testing Automatizado (xUnit & Moq):** Cobertura de pruebas unitarias sobre la lógica de negocio en la capa de servicios (`SweetTrack.Auth.Tests`).
+
+---
+
 ## Estado del Desarrollo
 
 * ✅ **Microservicio 1 (Auth API):** Implementado con arquitectura en cuatro capas (Core, Data, Services, API).
 * ✅ **Base de Datos Auth:** Configurada en un contenedor Docker.
+* ✅ **Testing y Validación Auth:** Pruebas unitarias con xUnit/Moq y validaciones con FluentValidation.
 * 🚧 **Microservicio 2 (Catalog API):** En etapa de planificación técnica.
 * ⏳ **Microservicio 3 (Ordering API):** Pendiente.
 * ⏳ **Frontend (Vue 3):** Pendiente.
+* ⏳ **Despliegue unificado (Docker Compose):** Pendiente de integración global (`docker-compose.yml`).
 
 ---
 
