@@ -1,39 +1,39 @@
 # SweetTrack: Frontend SPA
 
-Aplicación web cliente (Single Page Application) para la plataforma **SweetTrack**, construida con **Vue 3**, **TypeScript**, **Tailwind CSS** y **Vite**.
+Aplicación web cliente (Single Page Application) para la plataforma **SweetTrack**, desarrollada con **Vue 3**, **TypeScript**, **Tailwind CSS** y **Vite**.
 
-Permite a los kiosqueros y clientes registrarse, autenticarse de forma segura mediante JWT, navegar por el catálogo y gestionar sus pedidos con una experiencia visual moderna, responsiva y accesible.
+Permite a kiosqueros y administradores registrarse, iniciar sesión con autenticación JWT, consultar catálogos y gestionar pedidos a través de una interfaz responsiva, modular y accesible.
 
 ---
 
-## 🧰 Stack Tecnológico
+## Stack Tecnológico
 
 * **Framework:** [Vue 3](https://vuejs.org/) (Composition API con `<script setup lang="ts">`)
-* **Build Tool:** [Vite](https://vitejs.dev/)
+* **Herramienta de Construcción:** [Vite](https://vitejs.dev/)
 * **Lenguaje:** [TypeScript](https://www.typescriptlang.org/) (Tipado estricto)
-* **Gestor de Estado:** [Pinia](https://pinia.vuejs.org/)
+* **Gestión de Estado:** [Pinia](https://pinia.vuejs.org/)
 * **Enrutamiento:** [Vue Router](https://router.vuejs.org/)
-* **Estilado:** [Tailwind CSS](https://tailwindcss.com/) con soporte nativo de modo oscuro
+* **Estilos:** [Tailwind CSS](https://tailwindcss.com/) con soporte para modo oscuro
 * **Validación de Formularios:** [Zod](https://zod.dev/) sincronizado con los contratos DTO de .NET
 * **Testing:** [Vitest](https://vitest.dev/) y [@vue/test-utils](https://test-utils.vuejs.org/)
-* **Cliente HTTP:** Axios con interceptores automáticos de autorización Bearer
+* **Cliente HTTP:** Axios con interceptores para inyección de token Bearer
 
 ---
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```text
 frontend/src/
 ├── assets/         # Estilos globales (main.css) e imágenes
 ├── components/
-│   ├── base/       # Componentes base del Design System (BaseButton, BaseInput, BaseAlert)
+│   ├── base/       # Componentes base reutilizables (BaseButton, BaseInput, BaseAlert)
 │   └── auth/       # Componentes específicos de autenticación (AuthCard)
-├── config/         # Configuración de URLs y variables de entorno
-├── router/         # Rutas y Guards de navegación (protección de vistas autenticadas)
-├── schemas/        # Esquemas de validación con Zod (authSchemas.ts)
-├── services/       # Cliente Axios centralizado (apiClient.ts) y servicios API (authService.ts)
+├── config/         # Variables de entorno y configuración de endpoints
+├── router/         # Rutas y guards de navegación para vistas protegidas
+├── schemas/        # Esquemas de validación Zod (authSchemas.ts)
+├── services/       # Cliente Axios centralizado (apiClient.ts) y servicios de API (authService.ts)
 ├── stores/         # Stores de Pinia (userStore.ts: manejo de token JWT y sesión)
-├── types/          # Interfaces y contratos TypeScript espejo del Backend
+├── types/          # Interfaces y tipos TypeScript espejo del backend
 └── views/
     ├── auth/       # LoginView.vue
     └── dashboard/  # DashboardView.vue
@@ -41,7 +41,7 @@ frontend/src/
 
 ---
 
-## 🚀 Guía de Desarrollo
+## Guía de Desarrollo
 
 ### 1. Instalación de Dependencias
 ```bash
@@ -49,7 +49,7 @@ npm install
 ```
 
 ### 2. Variables de Entorno
-Crea o revisa el archivo `.env.development` en la raíz de `frontend/` apuntando a la API de backend:
+Configurar el archivo `.env.development` en la raíz de `frontend/` con la URL base de la API:
 
 ```env
 VITE_API_BASE_URL=http://localhost:5010/api
@@ -63,16 +63,16 @@ npm run dev
 
 ---
 
-## 🧪 Pruebas Unitarias y Calidad de Código
+## Pruebas Unitarias y Validación
 
 ### Ejecutar Suite de Tests (Vitest)
-Pruebas de comportamiento sobre componentes, stores de Pinia y esquemas Zod:
+Pruebas de comportamiento sobre componentes, stores de Pinia y esquemas de validación Zod:
 ```bash
 npm run test
 ```
 
-### Validación Estática de Tipos (TypeScript)
-Verifica que no existan errores de compilación de tipos en toda la aplicación:
+### Chequeo de Tipos Estáticos (TypeScript)
+Valida la integridad de tipos en toda la aplicación:
 ```bash
 npm run type-check
 ```
@@ -81,4 +81,4 @@ npm run type-check
 ```bash
 npm run build
 ```
-Genera los artefactos optimizados en la carpeta `dist/`.
+Genera los archivos estáticos optimizados en el directorio `dist/`.
