@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using SweetTrack.Auth.Core.Interfaces;
 using SweetTrack.Auth.Data;
 using SweetTrack.Auth.Services.Auth;
@@ -20,6 +21,35 @@ namespace SweetTrack.Auth.API
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "SweetTrack Auth API",
+                    Version = "v1",
+                    Description = "API de Autenticación e Identidad de SweetTrack"
+                });
+
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Ingresa el token JWT en este formato: Bearer {tu_token}"
+                });
+
+                options.AddSecurityRequirement(doc => new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecuritySchemeReference("Bearer", doc, null),
+                        new List<string>()
+                    }
+                });
+            });
+
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
@@ -69,11 +99,17 @@ namespace SweetTrack.Auth.API
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "SweetTrack Auth API v1");
+                });
                 app.MapOpenApi();
             }
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

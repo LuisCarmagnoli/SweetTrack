@@ -480,3 +480,13 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Ignorar todos los Markdown auxiliares, excepto los README
+*.md
+!README.md
+!frontend/README.md
+!Frontend/README.md
+!backend/README.md
+!Backend/README.md
+!backend/**/README.md
+!Backend/**/README.md
