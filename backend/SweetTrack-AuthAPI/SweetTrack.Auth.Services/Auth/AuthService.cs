@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using SweetTrack.Auth.Core.DTOs;
 using SweetTrack.Auth.Core.Interfaces;
 
@@ -45,23 +45,29 @@ namespace SweetTrack.Auth.Services.Auth
         public async Task<AuthResponseDTO?> LoginAsync(LoginRequestDTO request)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
-            bool isValid = await _userManager.CheckPasswordAsync(user, request.Password);
-
-            if (user == null || isValid == false)
+            if (user == null)
             {
-                return null; // Credenciales inválidas
+                return null; // Usuario no encontrado
+            }
+
+            bool isValid = await _userManager.CheckPasswordAsync(user, request.Password);
+            if (!isValid)
+            {
+                return null; // Contraseña incorrecta
             }
 
             // Obtener roles del usuario (tomamos el primero para el token)
             var roles = await _userManager.GetRolesAsync(user);
             var role = roles.FirstOrDefault() ?? "Client";
 
+            var userEmail = user.Email ?? request.Email;
+
             // Generar Token
-            var token = _jwtTokenGenerator.GenerateToken(user.Email, role);
+            var token = _jwtTokenGenerator.GenerateToken(userEmail, role);
 
             return new AuthResponseDTO
             {
-                Email = user.Email,
+                Email = userEmail,
                 Token = token,
                 Role = role
             };

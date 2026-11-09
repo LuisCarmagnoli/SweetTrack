@@ -490,3 +490,7 @@ $RECYCLE.BIN/
 !Backend/README.md
 !backend/**/README.md
 !Backend/**/README.md
+
+# Documentación privada y especificaciones locales (no subir a remoto)
+docs/
+docs/**
