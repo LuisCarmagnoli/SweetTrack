@@ -10,3 +10,4 @@ public class PagedResultDto<T>
     public bool HasPreviousPage => Page > 1;
     public bool HasNextPage => Page < TotalPages;
 }
+

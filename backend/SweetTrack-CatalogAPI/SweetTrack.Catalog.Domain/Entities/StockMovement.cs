@@ -17,3 +17,4 @@ public class StockMovement
     public DateTime TimestampUtc { get; set; } = DateTime.UtcNow;
     public string? ResponsibleUserId { get; set; }
 }
+

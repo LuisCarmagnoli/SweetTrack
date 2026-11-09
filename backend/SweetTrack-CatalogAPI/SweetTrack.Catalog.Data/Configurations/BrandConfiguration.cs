@@ -34,3 +34,4 @@ public class BrandConfiguration : IEntityTypeConfiguration<Brand>
             .OnDelete(DeleteBehavior.Restrict);
     }
 }
+

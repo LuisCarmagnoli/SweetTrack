@@ -20,3 +20,4 @@ public interface ICatalogService
     Task<IReadOnlyList<CategoryDto>> GetCategoriesAsync(bool onlyActive = true, CancellationToken cancellationToken = default);
     Task<CategoryDto> CreateCategoryAsync(CreateCategoryDto dto, CancellationToken cancellationToken = default);
 }
+

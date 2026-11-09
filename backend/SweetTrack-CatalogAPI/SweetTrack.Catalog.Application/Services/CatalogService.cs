@@ -304,3 +304,4 @@ public class CatalogService : ICatalogService
         return category.Adapt<CategoryDto>();
     }
 }
+

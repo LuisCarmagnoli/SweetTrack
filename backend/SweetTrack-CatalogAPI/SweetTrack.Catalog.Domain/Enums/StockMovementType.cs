@@ -11,3 +11,4 @@ public enum StockMovementType
     ImportacionMasivaExcel = 4,
     DevolucionPedido = 5
 }
+

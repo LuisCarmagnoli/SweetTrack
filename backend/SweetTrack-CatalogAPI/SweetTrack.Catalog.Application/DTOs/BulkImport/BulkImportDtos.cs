@@ -39,3 +39,4 @@ public class BulkImportResponseDto
     public string Message { get; set; } = string.Empty;
     public BulkImportTaskStatus Status { get; set; } = BulkImportTaskStatus.EnCola;
 }
+

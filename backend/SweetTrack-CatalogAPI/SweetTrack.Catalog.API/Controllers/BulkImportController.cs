@@ -19,13 +19,15 @@ public class BulkImportController : ControllerBase
     }
 
     /// <summary>
-    /// Sube una planilla Excel (.xlsx) para encolar la importación masiva no bloqueante de productos y precios.
+    /// Sube una planilla Excel (.xlsx) para encolar la importación masiva no bloqueante de productos y precios. Requiere rol Administrador.
     /// </summary>
     [HttpPost("excel")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [Consumes("multipart/form-data")]
     [ProducesResponseType(typeof(BulkImportResponseDto), StatusCodes.Status202Accepted)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> UploadExcel(IFormFile file, CancellationToken cancellationToken)
     {
         if (file == null || file.Length == 0)
@@ -47,7 +49,11 @@ public class BulkImportController : ControllerBase
         using var memoryStream = new MemoryStream();
         await file.CopyToAsync(memoryStream, cancellationToken);
 
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.Identity?.Name;
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                  ?? User.FindFirstValue(ClaimTypes.Email)
+                  ?? User.FindFirstValue("email")
+                  ?? User.Identity?.Name;
+
         var task = new BulkImportTask
         {
             FileName = file.FileName,
@@ -69,11 +75,13 @@ public class BulkImportController : ControllerBase
     }
 
     /// <summary>
-    /// Consulta el estado de procesamiento y los resultados de una tarea de importación masiva.
+    /// Consulta el estado de procesamiento y los resultados de una tarea de importación masiva. Requiere rol Administrador.
     /// </summary>
     [HttpGet("status/{taskId}")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(BulkImportStatusDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult GetStatus(string taskId)
     {
@@ -86,3 +94,4 @@ public class BulkImportController : ControllerBase
         return Ok(status);
     }
 }
+

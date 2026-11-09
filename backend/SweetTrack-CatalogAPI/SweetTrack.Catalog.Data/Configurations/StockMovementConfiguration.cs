@@ -33,3 +33,4 @@ public class StockMovementConfiguration : IEntityTypeConfiguration<StockMovement
             .IsRequired();
     }
 }
+

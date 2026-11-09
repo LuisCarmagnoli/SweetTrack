@@ -22,3 +22,4 @@ public class CatalogFilterParamsDto
     public bool? OnlyActive { get; set; } = true;
     public string? OrderBy { get; set; } // name_asc, name_desc, price_asc, price_desc
 }
+

@@ -64,3 +64,4 @@ public class UpdatePriceDto
     public decimal WholesalePrice { get; set; }
     public decimal BoxPrice { get; set; }
 }
+

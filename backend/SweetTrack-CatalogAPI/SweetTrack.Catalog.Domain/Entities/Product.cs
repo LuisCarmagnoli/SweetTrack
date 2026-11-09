@@ -32,3 +32,4 @@ public class Product
     /// </summary>
     public bool IsLowStock => StockUnits <= SafetyStock;
 }
+

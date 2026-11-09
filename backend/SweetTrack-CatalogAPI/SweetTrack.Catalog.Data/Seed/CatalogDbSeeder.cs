@@ -306,3 +306,4 @@ public static class CatalogDbSeeder
         await context.SaveChangesAsync(cancellationToken);
     }
 }
+

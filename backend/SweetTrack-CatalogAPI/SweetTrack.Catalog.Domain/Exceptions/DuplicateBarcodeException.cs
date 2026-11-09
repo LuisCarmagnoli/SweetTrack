@@ -13,3 +13,4 @@ public class DuplicateBarcodeException : Exception
         Barcode = barcode;
     }
 }
+

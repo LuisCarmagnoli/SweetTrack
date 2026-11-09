@@ -147,6 +147,67 @@ public class CatalogServiceTests
     }
 
     [Fact]
+    public async Task UpdateProductAsync_UpdatesFieldsSuccessfully()
+    {
+        // Arrange
+        var product = new Product
+        {
+            Barcode = "UPD01",
+            Name = "Producto Original",
+            BrandId = 1,
+            CategoryId = 1,
+            WholesalePrice = 300m,
+            BoxPrice = 3000m,
+            UnitsPerBox = 10,
+            StockUnits = 20,
+            SafetyStock = 5,
+            IsActive = true
+        };
+        _context.Products.Add(product);
+        await _context.SaveChangesAsync();
+
+        var updateDto = new UpdateProductDto
+        {
+            Barcode = "UPD01-EDIT",
+            Name = "Producto Modificado",
+            Description = "Nueva descripcion",
+            BrandId = 1,
+            CategoryId = 1,
+            WholesalePrice = 350m,
+            BoxPrice = 3500m,
+            UnitsPerBox = 10,
+            SafetyStock = 10,
+            IsActive = true
+        };
+
+        // Act
+        var result = await _catalogService.UpdateProductAsync(product.Id, updateDto);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("UPD01-EDIT", result.Barcode);
+        Assert.Equal("Producto Modificado", result.Name);
+        Assert.Equal(350m, result.WholesalePrice);
+    }
+
+    [Fact]
+    public async Task UpdateProductAsync_ThrowsProductNotFoundException_WhenProductDoesNotExist()
+    {
+        var updateDto = new UpdateProductDto
+        {
+            Barcode = "NOTFOUND",
+            Name = "No existe",
+            BrandId = 1,
+            CategoryId = 1,
+            WholesalePrice = 100m,
+            BoxPrice = 1000m
+        };
+
+        await Assert.ThrowsAsync<ProductNotFoundException>(() =>
+            _catalogService.UpdateProductAsync(88888, updateDto));
+    }
+
+    [Fact]
     public async Task DeleteProductAsync_PerformsSoftDelete()
     {
         // Arrange
@@ -175,3 +236,4 @@ public class CatalogServiceTests
         Assert.False(updated.IsActive);
     }
 }
+

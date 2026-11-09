@@ -15,3 +15,4 @@ public class CreateBrandDto
     public string? LogoUrl { get; set; }
     public bool IsActive { get; set; } = true;
 }
+

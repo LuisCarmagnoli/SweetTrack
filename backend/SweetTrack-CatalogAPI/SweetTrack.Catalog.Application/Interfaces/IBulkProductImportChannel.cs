@@ -10,3 +10,4 @@ public interface IBulkProductImportChannel
     void SetTaskStatus(BulkImportStatusDto status);
     void UpdateTaskStatus(string taskId, Action<BulkImportStatusDto> updateAction);
 }
+

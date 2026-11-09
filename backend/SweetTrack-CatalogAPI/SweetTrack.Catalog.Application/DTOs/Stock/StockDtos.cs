@@ -22,3 +22,4 @@ public class StockMovementDto
     public DateTime TimestampUtc { get; set; }
     public string? ResponsibleUserId { get; set; }
 }
+

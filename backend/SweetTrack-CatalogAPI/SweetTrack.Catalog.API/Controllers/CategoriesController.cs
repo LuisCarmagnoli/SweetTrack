@@ -28,14 +28,17 @@ public class CategoriesController : ControllerBase
     }
 
     /// <summary>
-    /// Registra una nueva categoría de producto. Requiere autenticación.
+    /// Registra una nueva categoría de producto. Requiere rol Administrador.
     /// </summary>
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(CategoryDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> Create([FromBody] CreateCategoryDto dto, CancellationToken cancellationToken = default)
     {
         var category = await _catalogService.CreateCategoryAsync(dto, cancellationToken);
         return CreatedAtAction(nameof(GetAll), new { id = category.Id }, category);
     }
 }
+

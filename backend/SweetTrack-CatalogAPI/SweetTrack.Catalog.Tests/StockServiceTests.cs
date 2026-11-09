@@ -157,3 +157,4 @@ public class StockServiceTests
             _stockService.AdjustStockAsync(999999, adjustment, "user"));
     }
 }
+

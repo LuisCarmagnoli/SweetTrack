@@ -9,3 +9,4 @@ public enum UnitOfMeasure
     BultoCerrado = 2,
     DisplayPack = 3
 }
+

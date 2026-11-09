@@ -68,3 +68,4 @@ public class StockService : IStockService
         return movements;
     }
 }
+

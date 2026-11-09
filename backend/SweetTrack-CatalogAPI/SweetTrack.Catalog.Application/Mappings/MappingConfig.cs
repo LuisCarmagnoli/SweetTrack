@@ -31,3 +31,4 @@ public static class MappingConfig
             .Map(dest => dest.ProductName, src => src.Product != null ? src.Product.Name : string.Empty);
     }
 }
+

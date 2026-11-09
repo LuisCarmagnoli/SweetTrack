@@ -28,14 +28,17 @@ public class BrandsController : ControllerBase
     }
 
     /// <summary>
-    /// Registra una nueva marca de fabricante o distribuidor. Requiere autenticación.
+    /// Registra una nueva marca de fabricante o distribuidor. Requiere rol Administrador.
     /// </summary>
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(BrandDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> Create([FromBody] CreateBrandDto dto, CancellationToken cancellationToken = default)
     {
         var brand = await _catalogService.CreateBrandAsync(dto, cancellationToken);
         return CreatedAtAction(nameof(GetAll), new { id = brand.Id }, brand);
     }
 }
+

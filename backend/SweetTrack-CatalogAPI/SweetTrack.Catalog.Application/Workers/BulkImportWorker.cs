@@ -282,10 +282,11 @@ public class BulkImportWorker : BackgroundService
 
                 processedRows++;
 
-                // Persistir lotes cada 50 registros para optimizar transacciones
+                // Persistir lotes cada 50 registros para optimizar transacciones y liberar memoria
                 if (processedRows % 50 == 0)
                 {
                     await context.SaveChangesAsync(stoppingToken);
+                    context.ChangeTracker.Clear();
                 }
             }
             catch (Exception ex)
@@ -346,3 +347,4 @@ public class BulkImportWorker : BackgroundService
         return null;
     }
 }
+

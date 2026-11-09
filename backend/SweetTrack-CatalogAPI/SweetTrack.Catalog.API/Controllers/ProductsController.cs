@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SweetTrack.Catalog.Application.DTOs.Common;
 using SweetTrack.Catalog.Application.DTOs.Products;
 using SweetTrack.Catalog.Application.DTOs.Stock;
@@ -68,18 +69,24 @@ public class ProductsController : ControllerBase
     }
 
     /// <summary>
-    /// Registra un nuevo producto en el catálogo mayorista. Requiere autenticación.
+    /// Registra un nuevo producto en el catálogo mayorista. Requiere rol Administrador.
     /// </summary>
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(ProductDetailDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Create([FromBody] CreateProductDto dto, CancellationToken cancellationToken)
     {
         try
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.Identity?.Name;
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                      ?? User.FindFirstValue(ClaimTypes.Email)
+                      ?? User.FindFirstValue("email")
+                      ?? User.Identity?.Name;
+
             var created = await _catalogService.CreateProductAsync(dto, userId, cancellationToken);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
@@ -90,12 +97,14 @@ public class ProductsController : ControllerBase
     }
 
     /// <summary>
-    /// Actualiza los datos comerciales y de empaque de un producto.
+    /// Actualiza los datos comerciales y de empaque de un producto. Requiere rol Administrador.
     /// </summary>
     [HttpPut("{id:int}")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(ProductDetailDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateProductDto dto, CancellationToken cancellationToken)
@@ -113,14 +122,20 @@ public class ProductsController : ControllerBase
         {
             return Conflict(new { message = ex.Message });
         }
+        catch (DbUpdateConcurrencyException)
+        {
+            return Conflict(new { message = "El producto fue modificado simultáneamente por otra operación. Por favor, refresque la información e intente nuevamente." });
+        }
     }
 
     /// <summary>
-    /// Realiza una baja lógica de un producto en el catálogo.
+    /// Realiza una baja lógica de un producto en el catálogo. Requiere rol Administrador.
     /// </summary>
     [HttpDelete("{id:int}")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
@@ -134,18 +149,25 @@ public class ProductsController : ControllerBase
     }
 
     /// <summary>
-    /// Realiza un ajuste manual de stock (ingreso o egreso) registrando trazabilidad inmutable.
+    /// Realiza un ajuste manual de stock (ingreso o egreso) registrando trazabilidad inmutable. Requiere rol Administrador.
     /// </summary>
     [HttpPatch("{id:int}/stock")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(StockMovementDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> AdjustStock(int id, [FromBody] StockAdjustmentDto dto, CancellationToken cancellationToken)
     {
         try
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? User.Identity?.Name;
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                      ?? User.FindFirstValue(ClaimTypes.Email)
+                      ?? User.FindFirstValue("email")
+                      ?? User.Identity?.Name;
+
             var movement = await _stockService.AdjustStockAsync(id, dto, userId, cancellationToken);
             return Ok(movement);
         }
@@ -157,6 +179,10 @@ public class ProductsController : ControllerBase
         {
             return BadRequest(new { message = ex.Message });
         }
+        catch (DbUpdateConcurrencyException)
+        {
+            return Conflict(new { message = "El stock del producto fue modificado simultáneamente por otra operación. Por favor, refresque la información e intente nuevamente." });
+        }
     }
 
     /// <summary>
@@ -165,9 +191,11 @@ public class ProductsController : ControllerBase
     [HttpGet("{id:int}/stock-movements")]
     [Authorize]
     [ProducesResponseType(typeof(IReadOnlyList<StockMovementDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetStockMovements(int id, [FromQuery] int limit = 50, CancellationToken cancellationToken = default)
     {
         var movements = await _stockService.GetProductStockHistoryAsync(id, limit, cancellationToken);
         return Ok(movements);
     }
 }
+
