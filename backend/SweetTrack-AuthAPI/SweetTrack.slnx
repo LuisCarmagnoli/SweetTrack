@@ -3,4 +3,5 @@
   <Project Path="SweetTrack.Auth.Core/SweetTrack.Auth.Core.csproj" />
   <Project Path="SweetTrack.Auth.Data/SweetTrack.Auth.Data.csproj" />
   <Project Path="SweetTrack.Auth.Services/SweetTrack.Auth.Services.csproj" />
+  <Project Path="SweetTrack.Auth.Tests/SweetTrack.Auth.Tests.csproj" />
 </Solution>

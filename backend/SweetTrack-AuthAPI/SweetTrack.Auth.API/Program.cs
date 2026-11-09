@@ -20,6 +20,18 @@ namespace SweetTrack.Auth.API
 
             // Add services to the container.
 
+            // Configurar política CORS para el cliente SPA
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontendApp", policy =>
+                {
+                    policy.WithOrigins("http://localhost:5173", "http://127.0.0.1:5173")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
+                });
+            });
+
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
@@ -108,6 +120,8 @@ namespace SweetTrack.Auth.API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("AllowFrontendApp");
 
             app.UseAuthentication();
             app.UseAuthorization();
