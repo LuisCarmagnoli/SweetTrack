@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="SweetTrack.Catalog.Domain/SweetTrack.Catalog.Domain.csproj" />
+  <Project Path="SweetTrack.Catalog.Data/SweetTrack.Catalog.Data.csproj" />
+  <Project Path="SweetTrack.Catalog.Application/SweetTrack.Catalog.Application.csproj" />
+  <Project Path="SweetTrack.Catalog.API/SweetTrack.Catalog.API.csproj" />
+  <Project Path="SweetTrack.Catalog.Tests/SweetTrack.Catalog.Tests.csproj" />
+</Solution>

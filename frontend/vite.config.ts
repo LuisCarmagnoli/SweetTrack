@@ -17,6 +17,11 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
+      '/api/catalog': {
+        target: 'http://localhost:5020',
+        changeOrigin: true,
+        secure: false,
+      },
       '/api': {
         target: 'http://localhost:5010',
         changeOrigin: true,
