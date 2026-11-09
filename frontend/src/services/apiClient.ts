@@ -22,13 +22,17 @@ export async function apiClient<T>(
 ): Promise<T> {
   const { token, headers = {}, ...customConfig } = options
 
-  const defaultHeaders: HeadersInit = {
-    'Content-Type': 'application/json',
+  const defaultHeaders: Record<string, string> = {
     Accept: 'application/json',
   }
 
+  // Solo agregar application/json si el body no es FormData
+  if (!(customConfig.body instanceof FormData)) {
+    defaultHeaders['Content-Type'] = 'application/json'
+  }
+
   if (token) {
-    (defaultHeaders as Record<string, string>)['Authorization'] = `Bearer ${token}`
+    defaultHeaders['Authorization'] = `Bearer ${token}`
   }
 
   const config: RequestInit = {

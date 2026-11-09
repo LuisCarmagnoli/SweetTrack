@@ -4,7 +4,7 @@ import { Eye, EyeOff } from '@lucide/vue'
 
 const props = withDefaults(
   defineProps<{
-    modelValue: string
+    modelValue: string | number
     label?: string
     type?: string
     placeholder?: string
@@ -25,7 +25,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: string): void
+  (e: 'update:modelValue', value: string | number): void
   (e: 'blur'): void
 }>()
 
