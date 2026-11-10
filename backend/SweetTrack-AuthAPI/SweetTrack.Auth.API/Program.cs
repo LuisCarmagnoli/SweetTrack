@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using SweetTrack.Auth.Core.Interfaces;
 using SweetTrack.Auth.Data;
+using SweetTrack.Auth.Data.Seed;
 using SweetTrack.Auth.Services.Auth;
 using SweetTrack.Auth.Services.Jwt;
 using System.Text;
@@ -14,7 +15,7 @@ namespace SweetTrack.Auth.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -126,10 +127,27 @@ namespace SweetTrack.Auth.API
             app.UseAuthentication();
             app.UseAuthorization();
 
-
             app.MapControllers();
 
-            app.Run();
+            // Migración automática y sembrado inicial de roles y usuario Administrador
+            try
+            {
+                using var scope = app.Services.CreateScope();
+                var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                if (dbContext.Database.CanConnect())
+                {
+                    await dbContext.Database.MigrateAsync();
+                    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+                    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                    await AuthDbSeeder.SeedAsync(userManager, roleManager, app.Configuration, app.Logger);
+                }
+            }
+            catch (Exception ex)
+            {
+                app.Logger.LogWarning(ex, "Aviso: No se pudo conectar a la base de datos de Auth al iniciar. Se omitió el sembrado automático.");
+            }
+
+            await app.RunAsync();
         }
     }
 }
