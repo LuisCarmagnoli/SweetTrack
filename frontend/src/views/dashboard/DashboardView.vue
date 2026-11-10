@@ -92,15 +92,31 @@ function handleLogout() {
 
       <!-- Módulos de Acceso Rápido B2B -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Card 1: Catálogo -->
-        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
-          <div class="w-12 h-12 rounded-xl bg-amber-500/15 text-amber-600 flex items-center justify-center mb-4">
-            <Package class="w-6 h-6" />
+        <!-- Card 1: Catálogo (Activo) -->
+        <div
+          class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs hover:shadow-lg hover:border-amber-500/50 dark:hover:border-amber-500/50 transition-all cursor-pointer group flex flex-col justify-between"
+          @click="router.push('/catalog')"
+        >
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-amber-500/15 text-amber-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <Package class="w-6 h-6" />
+            </div>
+            <div class="flex items-center justify-between mb-1">
+              <h3 class="font-bold text-base text-slate-900 dark:text-slate-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                Catálogo de Golosinas
+              </h3>
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                Disponible
+              </span>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">
+              Explora marcas líderes: Arcor, Terrabusi, Bagley y consulta precios mayoristas por bulto.
+            </p>
           </div>
-          <h3 class="font-bold text-base mb-1">Catálogo de Golosinas</h3>
-          <p class="text-xs text-slate-500 dark:text-slate-400">
-            Explora marcas líderes: Arcor, Terrabusi, Bagley y consulta precios mayoristas por bulto.
-          </p>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-amber-600 font-bold">
+            <span>Ver Catálogo</span>
+            <span class="group-hover:translate-x-1 transition-transform">→</span>
+          </div>
         </div>
 
         <!-- Card 2: Carrito y Pedidos -->

@@ -64,7 +64,10 @@ dotnet ef database update --project SweetTrack-AuthAPI/SweetTrack.Auth.Data --st
 
 ### 4. Ejecutar la API
 
-* **Con Visual Studio:** Abrir `SweetTrack.slnx`, seleccionar el perfil `http` o `https` y presionar **F5**.
+* **Con Visual Studio:** 
+  - Para todo el ecosistema (ambos backends): Abrir la solución maestra `SweetTrack.slnx` en la carpeta `backend/`.
+  - Para solo Auth: Abrir `SweetTrack-AuthAPI/SweetTrack.Auth.slnx`.
+  - Seleccionar los perfiles y presionar **F5**.
 * **Por terminal:**
   ```bash
   dotnet run --project SweetTrack-AuthAPI/SweetTrack.Auth.API

@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/01 - Auth/">
+    <Project Path="SweetTrack-AuthAPI/SweetTrack.Auth.API/SweetTrack.Auth.API.csproj" />
+    <Project Path="SweetTrack-AuthAPI/SweetTrack.Auth.Core/SweetTrack.Auth.Core.csproj" />
+    <Project Path="SweetTrack-AuthAPI/SweetTrack.Auth.Data/SweetTrack.Auth.Data.csproj" />
+    <Project Path="SweetTrack-AuthAPI/SweetTrack.Auth.Services/SweetTrack.Auth.Services.csproj" />
+    <Project Path="SweetTrack-AuthAPI/SweetTrack.Auth.Tests/SweetTrack.Auth.Tests.csproj" />
+  </Folder>
+  <Folder Name="/02 - Catalog/">
+    <Project Path="SweetTrack-CatalogAPI/SweetTrack.Catalog.Domain/SweetTrack.Catalog.Domain.csproj" />
+    <Project Path="SweetTrack-CatalogAPI/SweetTrack.Catalog.Data/SweetTrack.Catalog.Data.csproj" />
+    <Project Path="SweetTrack-CatalogAPI/SweetTrack.Catalog.Application/SweetTrack.Catalog.Application.csproj" />
+    <Project Path="SweetTrack-CatalogAPI/SweetTrack.Catalog.API/SweetTrack.Catalog.API.csproj" />
+    <Project Path="SweetTrack-CatalogAPI/SweetTrack.Catalog.Tests/SweetTrack.Catalog.Tests.csproj" />
+  </Folder>
+</Solution>

@@ -4,7 +4,7 @@ import { Eye, EyeOff } from '@lucide/vue'
 
 const props = withDefaults(
   defineProps<{
-    modelValue: string
+    modelValue: string | number
     label?: string
     type?: string
     placeholder?: string
@@ -13,6 +13,7 @@ const props = withDefaults(
     required?: boolean
     disabled?: boolean
     autocomplete?: string
+    ariaDescribedby?: string
   }>(),
   {
     type: 'text',
@@ -21,11 +22,12 @@ const props = withDefaults(
     required: false,
     disabled: false,
     autocomplete: 'off',
+    ariaDescribedby: undefined,
   }
 )
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: string): void
+  (e: 'update:modelValue', value: string | number): void
   (e: 'blur'): void
 }>()
 
@@ -72,6 +74,7 @@ function togglePassword() {
         :placeholder="placeholder"
         :disabled="disabled"
         :autocomplete="autocomplete"
+        :aria-describedby="ariaDescribedby"
         :class="[
           'w-full rounded-xl border bg-white dark:bg-slate-900 py-3 text-sm text-slate-900 dark:text-slate-100 shadow-xs transition-all duration-200 outline-hidden',
           $slots.icon ? 'pl-10' : 'pl-3.5',
