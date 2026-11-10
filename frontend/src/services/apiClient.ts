@@ -14,6 +14,7 @@ export class ApiError extends Error {
 
 interface RequestOptions extends RequestInit {
   token?: string | null
+  timeoutMs?: number
 }
 
 export async function apiClient<T>(
@@ -37,6 +38,7 @@ export async function apiClient<T>(
 
   const config: RequestInit = {
     ...customConfig,
+    signal: customConfig.signal || AbortSignal.timeout(options.timeoutMs ?? 15000),
     headers: {
       ...defaultHeaders,
       ...headers,
@@ -77,6 +79,9 @@ export async function apiClient<T>(
   } catch (error) {
     if (error instanceof ApiError) {
       throw error
+    }
+    if (error instanceof Error && error.name === 'TimeoutError') {
+      throw new ApiError(408, 'La solicitud excedió el tiempo límite de espera. Por favor, reintenta.')
     }
     throw new ApiError(0, 'No se pudo conectar con el servidor. Revisa tu conexión de red.')
   }

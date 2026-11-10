@@ -13,6 +13,7 @@ const props = withDefaults(
     required?: boolean
     disabled?: boolean
     autocomplete?: string
+    ariaDescribedby?: string
   }>(),
   {
     type: 'text',
@@ -21,6 +22,7 @@ const props = withDefaults(
     required: false,
     disabled: false,
     autocomplete: 'off',
+    ariaDescribedby: undefined,
   }
 )
 
@@ -72,6 +74,7 @@ function togglePassword() {
         :placeholder="placeholder"
         :disabled="disabled"
         :autocomplete="autocomplete"
+        :aria-describedby="ariaDescribedby"
         :class="[
           'w-full rounded-xl border bg-white dark:bg-slate-900 py-3 text-sm text-slate-900 dark:text-slate-100 shadow-xs transition-all duration-200 outline-hidden',
           $slots.icon ? 'pl-10' : 'pl-3.5',

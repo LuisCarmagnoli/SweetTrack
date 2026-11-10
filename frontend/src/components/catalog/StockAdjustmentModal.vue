@@ -158,9 +158,10 @@ async function handleSubmit() {
           v-model.number="quantity"
           type="number"
           placeholder="Ej: 50"
+          aria-describedby="stock-proyectado-help"
           :error="fieldErrors.quantity"
         />
-        <p class="text-[11px] text-slate-400 mt-1">
+        <p id="stock-proyectado-help" class="text-[11px] text-slate-400 mt-1">
           Stock proyectado resultante: <strong>{{ resultingStock }} unidades</strong>
         </p>
       </div>
@@ -198,3 +199,4 @@ async function handleSubmit() {
     </template>
   </BaseModal>
 </template>
+
