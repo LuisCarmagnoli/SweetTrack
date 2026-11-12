@@ -1,0 +1,6 @@
+@SweetTrack.Ordering.API_HostAddress = http://localhost:5217
+
+GET {{SweetTrack.Ordering.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

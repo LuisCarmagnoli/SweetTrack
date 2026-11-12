@@ -10,25 +10,33 @@ import {
   ChevronLeft,
   ChevronRight,
   Store,
+  ShoppingCart,
+  ClipboardList,
+  Truck,
 } from '@lucide/vue'
 import { useCatalogStore } from '@/stores/catalogStore'
 import { useUserStore } from '@/stores/userStore'
+import { useCartStore } from '@/stores/cartStore'
 import type { ProductResponseDto } from '@/types/catalog'
 import ProductCard from '@/components/catalog/ProductCard.vue'
 import CatalogFilters from '@/components/catalog/CatalogFilters.vue'
 import StockAdjustmentModal from '@/components/catalog/StockAdjustmentModal.vue'
 import BulkImportModal from '@/components/catalog/BulkImportModal.vue'
+import CartDrawer from '@/components/cart/CartDrawer.vue'
+import CheckoutModal from '@/components/cart/CheckoutModal.vue'
 import BaseButton from '@/components/base/BaseButton.vue'
 import BaseAlert from '@/components/base/BaseAlert.vue'
 
 const router = useRouter()
 const catalogStore = useCatalogStore()
 const userStore = useUserStore()
+const cartStore = useCartStore()
 
 // Modales
 const isStockModalOpen = ref(false)
 const selectedProductForAdjustment = ref<ProductResponseDto | null>(null)
 const isBulkImportModalOpen = ref(false)
+const isCheckoutModalOpen = ref(false)
 const successNotification = ref<string | null>(null)
 
 onMounted(() => {
@@ -53,6 +61,13 @@ function handleBulkImportCompleted() {
   setTimeout(() => {
     successNotification.value = null
   }, 4000)
+}
+
+function handleCheckoutSuccess(orderId: string) {
+  successNotification.value = `¡Pedido emitido con éxito! (ID: ${orderId})`
+  setTimeout(() => {
+    successNotification.value = null
+  }, 5000)
 }
 
 function changePage(newPage: number) {
@@ -91,6 +106,31 @@ function changePage(newPage: number) {
         </div>
 
         <div class="flex items-center gap-2">
+          <!-- Botón Mis Pedidos -->
+          <BaseButton
+            variant="outline"
+            size="sm"
+            @click="router.push('/my-orders')"
+          >
+            <template #icon>
+              <ClipboardList class="w-4 h-4 text-emerald-600" />
+            </template>
+            <span class="hidden md:inline">Mis Pedidos</span>
+          </BaseButton>
+
+          <!-- Botón Tablero Despacho (Admin) -->
+          <BaseButton
+            v-if="userStore.isAdmin"
+            variant="outline"
+            size="sm"
+            @click="router.push('/dispatch')"
+          >
+            <template #icon>
+              <Truck class="w-4 h-4 text-indigo-600" />
+            </template>
+            <span class="hidden md:inline">Despacho</span>
+          </BaseButton>
+
           <!-- Botón Admin: Importar Excel -->
           <BaseButton
             v-if="userStore.isAdmin"
@@ -103,6 +143,22 @@ function changePage(newPage: number) {
             </template>
             <span class="hidden sm:inline">Importar Excel</span>
           </BaseButton>
+
+          <!-- Botón Carrito Mayorista con Badge de Conteo -->
+          <button
+            type="button"
+            class="relative px-3 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs flex items-center gap-1.5 shadow-sm transition-all"
+            @click="cartStore.toggleCart"
+          >
+            <ShoppingCart class="w-4 h-4" />
+            <span class="hidden sm:inline">Carrito</span>
+            <span
+              v-if="cartStore.itemCount > 0"
+              class="px-1.5 py-0.2 rounded-full bg-white text-brand-700 text-[10px] font-black"
+            >
+              {{ cartStore.itemCount }}
+            </span>
+          </button>
 
           <!-- Botón Refrescar -->
           <button
@@ -282,6 +338,16 @@ function changePage(newPage: number) {
     <BulkImportModal
       v-model="isBulkImportModalOpen"
       @completed="handleBulkImportCompleted"
+    />
+
+    <!-- Drawer Lateral del Carrito Mayorista -->
+    <CartDrawer @checkout="isCheckoutModalOpen = true" />
+
+    <!-- Modal de Confirmación y Envío de Pedido -->
+    <CheckoutModal
+      :is-open="isCheckoutModalOpen"
+      @close="isCheckoutModalOpen = false"
+      @success="handleCheckoutSuccess"
     />
   </div>
 </template>
