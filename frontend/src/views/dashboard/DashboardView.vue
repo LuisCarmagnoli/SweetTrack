@@ -9,6 +9,7 @@ import {
   TrendingUp,
   User,
   Key,
+  Truck,
 } from '@lucide/vue'
 import { useUserStore } from '@/stores/userStore'
 import BaseButton from '@/components/base/BaseButton.vue'
@@ -74,7 +75,7 @@ function handleLogout() {
               ¡Bienvenido a SweetTrack!
             </h2>
             <p class="text-indigo-100 text-sm mt-1 max-w-xl">
-              Has iniciado sesión exitosamente como <strong>{{ userStore.email }}</strong> con rol <strong>{{ userStore.role }}</strong>. Ya estás conectado al microservicio de autenticación.
+              Has iniciado sesión exitosamente como <strong>{{ userStore.email }}</strong> con rol <strong>{{ userStore.role }}</strong>. Ecosistema de compras y despacho conectado.
             </p>
           </div>
 
@@ -119,26 +120,86 @@ function handleLogout() {
           </div>
         </div>
 
-        <!-- Card 2: Carrito y Pedidos -->
-        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
-          <div class="w-12 h-12 rounded-xl bg-indigo-500/15 text-indigo-600 flex items-center justify-center mb-4">
-            <ShoppingCart class="w-6 h-6" />
+        <!-- Card 2: Mis Pedidos (Activo) -->
+        <div
+          class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs hover:shadow-lg hover:border-emerald-500/50 dark:hover:border-emerald-500/50 transition-all cursor-pointer group flex flex-col justify-between"
+          @click="router.push('/my-orders')"
+        >
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/15 text-emerald-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <TrendingUp class="w-6 h-6" />
+            </div>
+            <div class="flex items-center justify-between mb-1">
+              <h3 class="font-bold text-base text-slate-900 dark:text-slate-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                Mis Pedidos y Envíos
+              </h3>
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                En Vivo
+              </span>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">
+              Monitoreo en tiempo real del ciclo de vida de tus pedidos con stepper de entrega y remitos.
+            </p>
           </div>
-          <h3 class="font-bold text-base mb-1">Carrito B2B</h3>
-          <p class="text-xs text-slate-500 dark:text-slate-400">
-            Arma tu pedido mayorista con cálculo automático de bultos y validación de pedido mínimo.
-          </p>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-emerald-600 font-bold">
+            <span>Ver Mis Pedidos</span>
+            <span class="group-hover:translate-x-1 transition-transform">→</span>
+          </div>
         </div>
 
-        <!-- Card 3: Seguimiento -->
-        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
-          <div class="w-12 h-12 rounded-xl bg-emerald-500/15 text-emerald-600 flex items-center justify-center mb-4">
-            <TrendingUp class="w-6 h-6" />
+        <!-- Card 3: Tablero de Despacho (Admin) / Carrito (Kiosco) -->
+        <div
+          v-if="userStore.isAdmin"
+          class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs hover:shadow-lg hover:border-indigo-500/50 dark:hover:border-indigo-500/50 transition-all cursor-pointer group flex flex-col justify-between"
+          @click="router.push('/dispatch')"
+        >
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-indigo-500/15 text-indigo-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <Truck class="w-6 h-6" />
+            </div>
+            <div class="flex items-center justify-between mb-1">
+              <h3 class="font-bold text-base text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                Tablero de Despacho
+              </h3>
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
+                Depósito
+              </span>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">
+              Kanban logístico en tiempo real, asignación de rutas y emisión de remitos PDF con código de barras.
+            </p>
           </div>
-          <h3 class="font-bold text-base mb-1">Mis Pedidos y Envíos</h3>
-          <p class="text-xs text-slate-500 dark:text-slate-400">
-            Monitoreo en tiempo real del ciclo de vida de tus entregas y remitos digitales.
-          </p>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-indigo-600 font-bold">
+            <span>Abrir Despacho</span>
+            <span class="group-hover:translate-x-1 transition-transform">→</span>
+          </div>
+        </div>
+
+        <div
+          v-else
+          class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs hover:shadow-lg hover:border-indigo-500/50 dark:hover:border-indigo-500/50 transition-all cursor-pointer group flex flex-col justify-between"
+          @click="router.push('/catalog')"
+        >
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-indigo-500/15 text-indigo-600 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <ShoppingCart class="w-6 h-6" />
+            </div>
+            <div class="flex items-center justify-between mb-1">
+              <h3 class="font-bold text-base text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                Carrito B2B
+              </h3>
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                Activo
+              </span>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">
+              Arma tu pedido mayorista con cálculo automático de bultos y validación de compra mínima ($50.000).
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-indigo-600 font-bold">
+            <span>Ir al Carrito</span>
+            <span class="group-hover:translate-x-1 transition-transform">→</span>
+          </div>
         </div>
 
         <!-- Card 4: Perfil de Kiosco -->

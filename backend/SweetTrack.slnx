@@ -13,4 +13,11 @@
     <Project Path="SweetTrack-CatalogAPI/SweetTrack.Catalog.API/SweetTrack.Catalog.API.csproj" />
     <Project Path="SweetTrack-CatalogAPI/SweetTrack.Catalog.Tests/SweetTrack.Catalog.Tests.csproj" />
   </Folder>
+  <Folder Name="/03 - Ordering/">
+    <Project Path="SweetTrack-OrderingAPI/SweetTrack.Ordering.Domain/SweetTrack.Ordering.Domain.csproj" />
+    <Project Path="SweetTrack-OrderingAPI/SweetTrack.Ordering.Data/SweetTrack.Ordering.Data.csproj" />
+    <Project Path="SweetTrack-OrderingAPI/SweetTrack.Ordering.Application/SweetTrack.Ordering.Application.csproj" />
+    <Project Path="SweetTrack-OrderingAPI/SweetTrack.Ordering.API/SweetTrack.Ordering.API.csproj" />
+    <Project Path="SweetTrack-OrderingAPI/SweetTrack.Ordering.Tests/SweetTrack.Ordering.Tests.csproj" />
+  </Folder>
 </Solution>

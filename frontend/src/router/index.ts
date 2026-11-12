@@ -3,6 +3,8 @@ import { useUserStore } from '@/stores/userStore'
 import LoginView from '@/views/auth/LoginView.vue'
 import DashboardView from '@/views/dashboard/DashboardView.vue'
 import CatalogView from '@/views/catalog/CatalogView.vue'
+import MyOrdersView from '@/views/orders/MyOrdersView.vue'
+import DispatchBoardView from '@/views/dispatch/DispatchBoardView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,13 +41,32 @@ const router = createRouter({
       },
     },
     {
+      path: '/my-orders',
+      name: 'my-orders',
+      component: MyOrdersView,
+      meta: {
+        requiresAuth: true,
+        title: 'Mis Pedidos | SweetTrack B2B',
+      },
+    },
+    {
+      path: '/dispatch',
+      name: 'dispatch',
+      component: DispatchBoardView,
+      meta: {
+        requiresAuth: true,
+        adminOnly: true,
+        title: 'Tablero de Despacho | SweetTrack B2B',
+      },
+    },
+    {
       path: '/:pathMatch(.*)*',
       redirect: '/login',
     },
   ],
 })
 
-// Navigation Guard de Autenticación
+// Navigation Guard de Autenticación y Roles
 router.beforeEach((to, _from, next) => {
   const userStore = useUserStore()
 
@@ -60,6 +81,12 @@ router.beforeEach((to, _from, next) => {
       path: '/login',
       query: { redirect: to.fullPath },
     })
+    return
+  }
+
+  // Si es ruta exclusiva para administradores y no tiene el rol
+  if (to.meta.adminOnly && !userStore.isAdmin) {
+    next({ path: '/dashboard' })
     return
   }
 

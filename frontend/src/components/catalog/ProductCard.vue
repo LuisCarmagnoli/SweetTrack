@@ -5,7 +5,9 @@ import {
   Layers,
   Barcode,
   SlidersHorizontal,
+  ShoppingCart,
 } from '@lucide/vue'
+import { useCartStore } from '@/stores/cartStore'
 import type { ProductResponseDto } from '@/types/catalog'
 import BaseBadge from '@/components/base/BaseBadge.vue'
 import BaseButton from '@/components/base/BaseButton.vue'
@@ -22,6 +24,13 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   (e: 'adjust-stock', product: ProductResponseDto): void
 }>()
+
+const cartStore = useCartStore()
+
+function handleAddBox() {
+  cartStore.addOrUpdateProduct(props.product, 1, 0)
+  cartStore.openCart()
+}
 
 // Formateador monetario argentino
 const currencyFormatter = new Intl.NumberFormat('es-AR', {
@@ -140,9 +149,10 @@ const categoryGradient = computed(() => {
           </span>
         </div>
 
-        <!-- Acciones: Botón Admin para Ajuste de Stock -->
-        <div v-if="isAdmin" class="mt-3">
+        <!-- Acciones: Botón de Compra Mayorista (Kiosco) o Ajuste de Stock (Admin) -->
+        <div class="mt-3 flex items-center gap-2">
           <BaseButton
+            v-if="isAdmin"
             variant="outline"
             size="sm"
             class="w-full justify-center"
@@ -152,6 +162,17 @@ const categoryGradient = computed(() => {
               <SlidersHorizontal class="w-3.5 h-3.5" />
             </template>
             Ajustar Stock
+          </BaseButton>
+
+          <BaseButton
+            v-else
+            size="sm"
+            class="w-full justify-center"
+            :disabled="product.stockUnits === 0"
+            @click="handleAddBox"
+          >
+            <ShoppingCart class="w-3.5 h-3.5 mr-1" />
+            <span>{{ product.stockUnits === 0 ? 'Agotado' : '+1 Bulto al Carrito' }}</span>
           </BaseButton>
         </div>
       </div>
