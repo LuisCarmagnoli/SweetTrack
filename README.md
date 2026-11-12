@@ -215,13 +215,16 @@ La aplicación web estará disponible en: **[http://localhost:5173](http://local
 ### 6. Ejecución de Pruebas Automatizadas
 
 ```bash
-# Pruebas de Backend (xUnit / Moq - 46 tests pasando al 100%)
+# Pruebas de Backend (xUnit / Moq - 47 tests pasando al 100%: 6 Auth, 13 Catalog, 28 Ordering)
 dotnet test backend/SweetTrack.slnx
 
-# Pruebas de Frontend (Vitest - 55 tests pasando al 100%)
+# Pruebas de Frontend (Vitest - 55 tests pasando al 100% en 9 suites)
 cd frontend
 npm test
 
-# Verificación estricta de tipos TypeScript
+# Verificación estricta de tipos TypeScript (0 errores)
 npm run type-check
+
+# Compilación optimizada para producción
+npm run build
 ```
