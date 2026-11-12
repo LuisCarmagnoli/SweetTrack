@@ -6,3 +6,4 @@ public enum PaymentMethod
     TransferenciaBancaria = 2,
     EfectivoContraEntrega = 3
 }
+

@@ -12,3 +12,4 @@ public class MinimumOrderAmountNotMetException : Exception
         MinimumRequired = minimumRequired;
     }
 }
+

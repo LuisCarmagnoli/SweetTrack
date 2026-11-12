@@ -14,3 +14,4 @@ public class InvalidOrderStateTransitionException : Exception
         TargetStatus = targetStatus;
     }
 }
+

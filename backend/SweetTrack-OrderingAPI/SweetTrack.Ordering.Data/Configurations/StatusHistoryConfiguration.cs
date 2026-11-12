@@ -31,3 +31,4 @@ public class StatusHistoryConfiguration : IEntityTypeConfiguration<StatusHistory
             .IsRequired();
     }
 }
+

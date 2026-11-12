@@ -29,3 +29,4 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
             .IsRequired();
     }
 }
+

@@ -59,3 +59,4 @@ public class CleanupAbandonedCartsJob : IJob
         _logger.LogInformation("[Quartz] Cancelación automática de pedidos expirados completada.");
     }
 }
+

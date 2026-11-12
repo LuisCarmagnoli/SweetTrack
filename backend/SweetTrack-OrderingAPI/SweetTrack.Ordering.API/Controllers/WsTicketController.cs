@@ -53,3 +53,4 @@ public class WsTicketController : ControllerBase
         return Ok(new WsTicketResponseDto(ticket, expiresAtUtc));
     }
 }
+

@@ -53,3 +53,4 @@ public class OrderTests
         Assert.Empty(order.StatusHistories);
     }
 }
+

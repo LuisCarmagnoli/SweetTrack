@@ -59,3 +59,4 @@ public class OrderStateMachineTests
         Assert.Contains(OrderStatus.NoEntregado, transitions);
     }
 }
+

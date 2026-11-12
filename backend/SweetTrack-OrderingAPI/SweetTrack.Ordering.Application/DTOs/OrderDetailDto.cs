@@ -21,3 +21,4 @@ public record OrderDetailDto(
     List<StatusHistoryDto> StatusHistory,
     List<OrderStatus> AvailableTransitions
 );
+

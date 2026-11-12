@@ -127,3 +127,4 @@ describe('useCartStore - Carrito Mayorista B2B y Reglas de Negocio', () => {
     expect(store.isCartOpen).toBe(false)
   })
 })
+

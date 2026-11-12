@@ -4,3 +4,4 @@ public interface IPdfGeneratorService
 {
     Task<byte[]> GenerateWaybillPdfAsync(Guid orderId, CancellationToken cancellationToken = default);
 }
+

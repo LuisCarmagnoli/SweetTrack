@@ -22,3 +22,4 @@ public record WsTicketResponseDto(
     string Ticket,
     DateTime ExpiresAtUtc
 );
+

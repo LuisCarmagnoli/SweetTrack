@@ -10,3 +10,4 @@ public interface IOrderWorkflowService
     Task<OrderDetailDto> TransitionStatusAsync(Guid orderId, StatusTransitionRequestDto request, string modifiedByUserId, string role, CancellationToken cancellationToken = default);
     Task<DispatchBoardDto> GetDispatchBoardAsync(CancellationToken cancellationToken = default);
 }
+

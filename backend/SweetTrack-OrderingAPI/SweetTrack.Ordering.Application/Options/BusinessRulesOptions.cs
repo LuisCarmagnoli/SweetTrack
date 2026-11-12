@@ -7,3 +7,4 @@ public class BusinessRulesOptions
     public decimal MinimumOrderAmount { get; set; } = 50000.00m;
     public int AbandonedCartExpirationHours { get; set; } = 24;
 }
+

@@ -10,3 +10,4 @@ public record StatusHistoryDto(
     string? Notes,
     DateTime TimestampUtc
 );
+

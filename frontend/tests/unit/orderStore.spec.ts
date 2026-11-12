@@ -154,3 +154,4 @@ describe('useOrderStore - Flujo de Órdenes y Tiempo Real SignalR', () => {
     expect(store.isSignalRConnected).toBe(false)
   })
 })
+

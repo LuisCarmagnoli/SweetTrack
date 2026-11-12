@@ -67,3 +67,4 @@ public class DailyOrderConsolidationJob : IJob
         _logger.LogInformation("[Quartz] Consolidación completada: {Count} pedidos asignados a la ruta {RouteId} ({Chofer}).", unassignedOrders.Count, todayRoute.Id, todayRoute.NombreChofer);
     }
 }
+

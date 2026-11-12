@@ -17,3 +17,4 @@ public interface IEmailNotificationService
         string newStatus,
         CancellationToken cancellationToken = default);
 }
+

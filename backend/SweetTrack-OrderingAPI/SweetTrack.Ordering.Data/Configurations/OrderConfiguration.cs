@@ -77,3 +77,4 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
             .OnDelete(DeleteBehavior.SetNull);
     }
 }
+

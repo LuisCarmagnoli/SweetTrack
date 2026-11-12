@@ -5,3 +5,4 @@
   <Project Path="SweetTrack.Ordering.API/SweetTrack.Ordering.API.csproj" />
   <Project Path="SweetTrack.Ordering.Tests/SweetTrack.Ordering.Tests.csproj" />
 </Solution>
+
