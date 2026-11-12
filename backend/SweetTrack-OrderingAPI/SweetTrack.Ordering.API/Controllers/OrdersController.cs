@@ -188,7 +188,10 @@ public class OrdersController : ControllerBase
     private string GetCurrentUserId()
     {
         return User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+               ?? User.FindFirst(ClaimTypes.Email)?.Value
                ?? User.FindFirst("sub")?.Value
+               ?? User.FindFirst("email")?.Value
+               ?? User.Identity?.Name
                ?? throw new UnauthorizedAccessException("Usuario no autenticado.");
     }
 

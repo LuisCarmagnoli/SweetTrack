@@ -35,7 +35,7 @@ public class PdfWaybillGenerator : IPdfGeneratorService
         var page = document.AddPage();
         page.Size = PdfSharpCore.PageSize.A4;
 
-        using var gfx = XGraphics.FromPdfPage(page);
+        var gfx = XGraphics.FromPdfPage(page);
 
         // Fuentes
         var fontTitle = new XFont("Arial", 16, XFontStyle.Bold);
@@ -104,6 +104,30 @@ public class PdfWaybillGenerator : IPdfGeneratorService
 
         foreach (var item in order.Items)
         {
+            if (y > 580)
+            {
+                gfx.Dispose();
+                page = document.AddPage();
+                page.Size = PdfSharpCore.PageSize.A4;
+                gfx = XGraphics.FromPdfPage(page);
+
+                y = 40;
+                gfx.DrawString($"REMITO DE ENTREGA - {order.NumeroPedido} (Continuación)", fontHeader, brushBlack, new XPoint(40, y));
+                y += 20;
+
+                gfx.DrawRectangle(brushHeaderBg, 40, y, 515, 20);
+                gfx.DrawRectangle(penLine, 40, y, 515, 20);
+
+                gfx.DrawString("CÓDIGO", fontHeader, brushBlack, new XPoint(45, y + 14));
+                gfx.DrawString("DESCRIPCIÓN DEL PRODUCTO", fontHeader, brushBlack, new XPoint(125, y + 14));
+                gfx.DrawString("BULTOS", fontHeader, brushBlack, new XPoint(340, y + 14));
+                gfx.DrawString("UNIDADES", fontHeader, brushBlack, new XPoint(395, y + 14));
+                gfx.DrawString("P. UNIT", fontHeader, brushBlack, new XPoint(455, y + 14));
+                gfx.DrawString("TOTAL", fontHeader, brushBlack, new XPoint(510, y + 14));
+
+                y += 20;
+            }
+
             gfx.DrawLine(penLine, 40, y + 18, 555, y + 18);
 
             gfx.DrawString(item.CodigoBarrasSnapshot, fontSmall, brushBlack, new XPoint(45, y + 13));
@@ -120,6 +144,15 @@ public class PdfWaybillGenerator : IPdfGeneratorService
             gfx.DrawString($"${item.SubtotalLinea:N2}", fontBodyBold, brushBlack, new XPoint(510, y + 13));
 
             y += 20;
+        }
+
+        if (y > 560)
+        {
+            gfx.Dispose();
+            page = document.AddPage();
+            page.Size = PdfSharpCore.PageSize.A4;
+            gfx = XGraphics.FromPdfPage(page);
+            y = 40;
         }
 
         y += 15;
@@ -153,6 +186,8 @@ public class PdfWaybillGenerator : IPdfGeneratorService
 
         gfx.DrawLine(penLine, 320, y + 50, 530, y + 50);
         gfx.DrawString("DNI / Fecha y Hora de Entrega", fontSmall, brushBlack, new XPoint(320, y + 62));
+
+        gfx.Dispose();
 
         using var ms = new MemoryStream();
         document.Save(ms, false);

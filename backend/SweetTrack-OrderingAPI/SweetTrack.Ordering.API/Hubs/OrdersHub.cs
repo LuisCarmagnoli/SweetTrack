@@ -35,7 +35,10 @@ public class OrdersHub : Hub
         else if (Context.User?.Identity?.IsAuthenticated == true)
         {
             userId = Context.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
-                     ?? Context.User.FindFirst("sub")?.Value;
+                     ?? Context.User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value
+                     ?? Context.User.FindFirst("sub")?.Value
+                     ?? Context.User.FindFirst("email")?.Value
+                     ?? Context.User.Identity?.Name;
             role = Context.User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value
                    ?? (Context.User.IsInRole("Admin") ? "Admin" : "Client");
         }

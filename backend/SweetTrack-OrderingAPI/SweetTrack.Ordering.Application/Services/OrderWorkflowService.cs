@@ -50,9 +50,9 @@ public class OrderWorkflowService : IOrderWorkflowService
             throw new MinimumOrderAmountNotMetException(total, _options.MinimumOrderAmount);
         }
 
-        // 3. Generar número correlativo de pedido
-        var count = await _context.Orders.CountAsync(cancellationToken) + 1;
-        var orderNumber = $"ORD-{DateTime.UtcNow:yyyy}-{count:D6}";
+        // 3. Generar número correlativo de pedido con componente aleatorio para evitar colisiones concurrentes
+        var randomSuffix = Guid.NewGuid().ToString("N")[..6].ToUpperInvariant();
+        var orderNumber = $"ORD-{DateTime.UtcNow:yyyyMMdd}-{randomSuffix}";
 
         // 4. Instanciar y ensamblar la entidad Order
         var order = new Order(

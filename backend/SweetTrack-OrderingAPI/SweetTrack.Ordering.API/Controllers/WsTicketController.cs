@@ -30,7 +30,10 @@ public class WsTicketController : ControllerBase
     public IActionResult GenerateWsTicket()
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
-                     ?? User.FindFirst("sub")?.Value;
+                     ?? User.FindFirst(ClaimTypes.Email)?.Value
+                     ?? User.FindFirst("sub")?.Value
+                     ?? User.FindFirst("email")?.Value
+                     ?? User.Identity?.Name;
 
         var email = User.FindFirst(ClaimTypes.Email)?.Value
                     ?? User.FindFirst("email")?.Value ?? "desconocido@sweettrack.com";

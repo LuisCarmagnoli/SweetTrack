@@ -51,5 +51,30 @@ public class PdfWaybillGeneratorTests
         await Assert.ThrowsAsync<OrderNotFoundException>(() =>
             generator.GenerateWaybillPdfAsync(randomId));
     }
+
+    [Fact]
+    public async Task GenerateWaybillPdfAsync_WhenOrderHasManyItems_GeneratesMultiPagePdfWithoutCrashing()
+    {
+        using var context = CreateInMemoryDbContext();
+        var generator = new PdfWaybillGenerator(context);
+
+        var order = new Order("ORD-2026-000999", "kiosk-user-multi", "Kiosco Mayorista Gigante", "20-11223344-5", "Av. San Martín 2000", PaymentMethod.TransferenciaBancaria);
+
+        // Agregar 30 ítems para forzar múltiples páginas
+        for (int i = 1; i <= 30; i++)
+        {
+            order.AddItem(new OrderItem(Guid.NewGuid(), $"779000000{i:D4}", $"Golosina Surtida Especial N° {i}", i * 10, i, 1500m));
+        }
+
+        context.Orders.Add(order);
+        await context.SaveChangesAsync();
+
+        var pdfBytes = await generator.GenerateWaybillPdfAsync(order.Id);
+
+        Assert.NotNull(pdfBytes);
+        Assert.True(pdfBytes.Length > 2500, "El PDF multipágina debe contener un tamaño mayor debido a múltiples páginas.");
+        var pdfHeader = System.Text.Encoding.ASCII.GetString(pdfBytes[..5]);
+        Assert.Equal("%PDF-", pdfHeader);
+    }
 }
 

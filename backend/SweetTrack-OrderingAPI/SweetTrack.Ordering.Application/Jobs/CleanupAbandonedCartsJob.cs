@@ -44,15 +44,11 @@ public class CleanupAbandonedCartsJob : IJob
 
         foreach (var order in expiredOrders)
         {
-            order.StatusHistories.Add(new StatusHistory(
-                orderId: order.Id,
-                estadoAnterior: order.EstadoActual,
-                estadoNuevo: OrderStatus.Cancelado,
-                usuarioModificadorId: "system-quartz-job",
-                notasMotivo: $"Cancelación automática: superó la ventana de {_options.AbandonedCartExpirationHours} horas sin confirmación"));
-
-            order.EstadoActual = OrderStatus.Cancelado;
-            order.FechaActualizacionUtc = DateTime.UtcNow;
+            order.TransitionTo(
+                OrderStatus.Cancelado,
+                "system-quartz-job",
+                "Admin",
+                $"Cancelación automática: superó la ventana de {_options.AbandonedCartExpirationHours} horas sin confirmación");
         }
 
         await _context.SaveChangesAsync(jobContext.CancellationToken);
